@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ListofUsers from './ListofUsers';
+import { toast } from 'react-toastify';
 
 const Addinput = () => {
   const [userInput, setUserInput] = useState({
@@ -11,8 +13,19 @@ const Addinput = () => {
     const { name, value } = e.target;
     setUserInput({ ...userInput, [name]: value });
   };
-  const handlesubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      userInput.email === '' ||
+      userInput.phone === '' ||
+      userInput.password === ''
+    ) {
+      //   toast.error('Please fill all the fields');
+      //   return;
+      return alert('Please fill all the fields');
+    }
+
     setUser([...user, userInput]);
     setUserInput({ email: '', phone: '', password: '' });
   };
@@ -20,7 +33,10 @@ const Addinput = () => {
   console.log('user', user);
 
   return (
-    <div className='flex flex-col m-auto w-1/3 gap-y-5' onClick={handlesubmit}>
+    <form
+      className='flex flex-col m-auto w-1/3 gap-y-5'
+      onSubmit={handleSubmit}
+    >
       <input
         type='text'
         placeholder='Add email'
@@ -45,11 +61,15 @@ const Addinput = () => {
         value={userInput.phone}
         onChange={handleChange}
       />
-      <button className='text-2xl text-red-500 border-4 p-2 bg-stone-300'>
+      <button
+        className='text-2xl text-red-500 border-4 p-2 bg-stone-300'
+        type='submit'
+      >
         {' '}
         Add
       </button>
-    </div>
+      <ListofUsers user={user} />
+    </form>
   );
 };
 
